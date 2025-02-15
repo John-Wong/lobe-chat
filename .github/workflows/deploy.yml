@@ -29,16 +29,16 @@ jobs:
           node-version: lts/*
 
       - name: Install step
-        run: "npm install -g bun && npm install --legacy-peer-deps"
+        run: "npm install -g bun && bun install --legacy-peer-deps"
 
       - name: Build step
-        run: "npm run build && (mkdir -p .next/standalone/public; cp -r public .next/standalone/public; mkdir -p .next/standalone/.next/static; cp -r .next/static .next/standalone/.next/static; mv .next/standalone/server.js .next/standalone/server.cjs)"
+        run: "bun run build && (mkdir -p .next/standalone/public; cp -r public .next/standalone/public; mkdir -p .next/standalone/.next/static; cp -r .next/static .next/standalone/.next/static)"
 
       - name: Upload to Deno Deploy
         uses: denoland/deployctl@v1
         with:
           project: "lbc"
-          entrypoint: "./server.cjs"
+          entrypoint: "npm:start"
           root: ".next/standalone"
           
           
